@@ -2,6 +2,11 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/Index")
 public class Index extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static String url = "jdbc:mysql://ec2-3-12-154-67.us-east-2.compute.amazonaws.com:3306/clubsDB" + "?useSSL=false";
+	static String user = "clubs";
+	static String password = "clubs";
+	static Connection connection = null;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -29,153 +38,143 @@ public class Index extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		PrintWriter out = response.getWriter();
-		out.println("<!DOCTYPE html>\r\n"
-				+ "<html lang=\"en\">\r\n"
-				+ "	<head>\r\n"
-				+ "		<meta charset=\"UTF-8\" />\r\n"
-				+ "		<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />\r\n"
-				+ "		<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n"
-				+ "		<title>The 4 Irons</title>\r\n"
-				+ "	</head>\r\n"
-				+ "	<body>\r\n"
-				+ "		<style type=\"text/css\">\r\n"
-				+ "			* {\r\n"
-				+ "				margin: 0;\r\n"
-				+ "			}\r\n"
-				+ "			html {\r\n"
-				+ "				background-color: #5cdb95;\r\n"
-				+ "			}\r\n"
-				+ "			.header {\r\n"
-				+ "				display: flex;\r\n"
-				+ "				justify-content: space-between;\r\n"
-				+ "				margin-bottom: 50px;\r\n"
-				+ "				background-color: #379683;\r\n"
-				+ "				padding-top: 25px;\r\n"
-				+ "				padding-bottom: 25px;\r\n"
-				+ "			}\r\n"
-				+ "			.links {\r\n"
-				+ "				display: flex;\r\n"
-				+ "				width: 300px;\r\n"
-				+ "				justify-content: space-evenly;\r\n"
-				+ "				align-items: center;\r\n"
-				+ "			}\r\n"
-				+ "\r\n"
-				+ "			.store {\r\n"
-				+ "				display: flex;\r\n"
-				+ "				justify-content: center;\r\n"
-				+ "			}\r\n"
-				+ "			.grid-container {\r\n"
-				+ "				display: inline-grid;\r\n"
-				+ "				grid-template-rows: 1fr 1fr 1fr;\r\n"
-				+ "				grid-template-columns: 1fr 1fr 1fr;\r\n"
-				+ "				grid-gap: 3px;\r\n"
-				+ "				text-align: center;\r\n"
-				+ "			}\r\n"
-				+ "			h4,\r\n"
-				+ "			p {\r\n"
-				+ "				margin: 0;\r\n"
-				+ "			}\r\n"
-				+ "			.item,\r\n"
-				+ "			img,\r\n"
-				+ "			h4,\r\n"
-				+ "			p {\r\n"
-				+ "				background-color: #edf5e1;\r\n"
-				+ "			}\r\n"
-				+ "\r\n"
-				+ "			.item {\r\n"
-				+ "				width: 200px;\r\n"
-				+ "				margin: 15px;\r\n"
-				+ "				border: 3px solid #05386b;\r\n"
-				+ "			}\r\n"
-				+ "\r\n"
-				+ "			h1 {\r\n"
-				+ "				margin-left: 15px;\r\n"
-				+ "			}\r\n"
-				+ "			button {\r\n"
-				+ "				margin-top: 5px;\r\n"
-				+ "				margin-bottom: 5px;\r\n"
-				+ "			}\r\n"
-				+ "			.label {\r\n"
-				+ "				text-align: center;\r\n"
-				+ "			}\r\n"
-				+ "		</style>\r\n"
-				+ "\r\n"
-				+ "		<div class=\"header\">\r\n"
-				+ "			<h1>The Four Irons</h1>\r\n"
-				+ "			<div class=\"links\">\r\n"
-				+ "				<h3>Store</h3>\r\n"
-				+ "				<h3>Local Course Guide</h3>\r\n"
-				+ "			</div>\r\n"
-				+ "		</div>\r\n"
-				+ "		<h1 class=\"label\">Store</h1>\r\n"
-				+ "		<div class=\"store\">\r\n"
-				+ "			<div class=\"grid-container\">\r\n"
-				+ "				<div class=\"grid-item\">\r\n"
-				+ "					<div class=\"item\">\r\n"
-				+ "						<img\r\n"
-				+ "							src=\"https://golfdigest.sports.sndimg.com/content/dam/images/golfdigest/fullset/2021/hotlist-2021/players-irons/callaway-apex-pro/GD0221_HL_PI_CALLAWAY_APEX_PRO_HERO%20copy.png.rend.hgtvcom.686.686.suffix/1610984924019.png\"\r\n"
-				+ "							width=\"75\"\r\n"
-				+ "							height=\"125\"\r\n"
-				+ "						/>\r\n"
-				+ "						<h4>Callaway C5</h4>\r\n"
-				+ "						<p>$234.99</p>\r\n"
-				+ "						<button>VIEW</button>\r\n"
-				+ "					</div>\r\n"
-				+ "				</div>\r\n"
-				+ "				<div class=\"grid-item\">\r\n"
-				+ "					<div class=\"item\">\r\n"
-				+ "						<img\r\n"
-				+ "							src=\"https://golfdigest.sports.sndimg.com/content/dam/images/golfdigest/fullset/2021/hotlist-2021/players-irons/callaway-apex-pro/GD0221_HL_PI_CALLAWAY_APEX_PRO_HERO%20copy.png.rend.hgtvcom.686.686.suffix/1610984924019.png\"\r\n"
-				+ "							width=\"75\"\r\n"
-				+ "							height=\"125\"\r\n"
-				+ "						/>\r\n"
-				+ "						<h4>Callaway C5</h4>\r\n"
-				+ "						<p>$234.99</p>\r\n"
-				+ "						<button>VIEW</button>\r\n"
-				+ "					</div>\r\n"
-				+ "				</div>\r\n"
-				+ "				<div class=\"grid-item\">\r\n"
-				+ "					<div class=\"item\">\r\n"
-				+ "						<img\r\n"
-				+ "							src=\"https://golfdigest.sports.sndimg.com/content/dam/images/golfdigest/fullset/2021/hotlist-2021/players-irons/callaway-apex-pro/GD0221_HL_PI_CALLAWAY_APEX_PRO_HERO%20copy.png.rend.hgtvcom.686.686.suffix/1610984924019.png\"\r\n"
-				+ "							width=\"75\"\r\n"
-				+ "							height=\"125\"\r\n"
-				+ "						/>\r\n"
-				+ "						<h4>Callaway C5</h4>\r\n"
-				+ "						<p>$234.99</p>\r\n"
-				+ "						<button>VIEW</button>\r\n"
-				+ "					</div>\r\n"
-				+ "				</div>\r\n"
-				+ "				<div class=\"grid-item\">\r\n"
-				+ "					<div class=\"item\">\r\n"
-				+ "						<img\r\n"
-				+ "							src=\"https://golfdigest.sports.sndimg.com/content/dam/images/golfdigest/fullset/2021/hotlist-2021/players-irons/callaway-apex-pro/GD0221_HL_PI_CALLAWAY_APEX_PRO_HERO%20copy.png.rend.hgtvcom.686.686.suffix/1610984924019.png\"\r\n"
-				+ "							width=\"75\"\r\n"
-				+ "							height=\"125\"\r\n"
-				+ "						/>\r\n"
-				+ "						<h4>Callaway C5</h4>\r\n"
-				+ "						<p>$234.99</p>\r\n"
-				+ "						<button>VIEW</button>\r\n"
-				+ "					</div>\r\n"
-				+ "				</div>\r\n"
-				+ "				<div class=\"grid-item\">\r\n"
-				+ "					<div class=\"item\">\r\n"
-				+ "						<img\r\n"
-				+ "							src=\"https://golfdigest.sports.sndimg.com/content/dam/images/golfdigest/fullset/2021/hotlist-2021/players-irons/callaway-apex-pro/GD0221_HL_PI_CALLAWAY_APEX_PRO_HERO%20copy.png.rend.hgtvcom.686.686.suffix/1610984924019.png\"\r\n"
-				+ "							width=\"75\"\r\n"
-				+ "							height=\"125\"\r\n"
-				+ "						/>\r\n"
-				+ "						<h4>Callaway C5</h4>\r\n"
-				+ "						<p>$234.99</p>\r\n"
-				+ "						<button>VIEW</button>\r\n"
-				+ "					</div>\r\n"
-				+ "				</div>\r\n"
-				+ "			</div>\r\n"
-				+ "		</div>\r\n"
-				+ "	</body>\r\n"
-				+ "</html>\r\n"
-				+ "");
+		connection = null;
+		ResultSet rs = null;
+	      try {
+	    	 Class.forName("com.mysql.cj.jdbc.Driver");
+	         connection = DriverManager.getConnection(url, user, password);
+	         
+	      } catch (SQLException e) {
+	         System.out.println("Connection Failed! Check output console");
+	         e.printStackTrace();
+	         return;
+	      } catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	      String selectSQL = "SELECT * FROM clubsTable";
+	      try {
+			PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+			 rs = preparedStatement.executeQuery();
+			 
+			 PrintWriter out = response.getWriter();
+				out.println("<!DOCTYPE html>\r\n"
+						+ "<html lang=\"en\">\r\n"
+						+ "	<head>\r\n"
+						+ "		<meta charset=\"UTF-8\" />\r\n"
+						+ "		<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />\r\n"
+						+ "		<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n"
+						+ "		<title>The 4 Irons</title>\r\n"
+						+ "	</head>\r\n"
+						+ "	<body>\r\n"
+						+ "		<style type=\"text/css\">\r\n"
+						+ "			* {\r\n"
+						+ "				margin: 0;\r\n"
+						+ "			}\r\n"
+						+ "			html {\r\n"
+						+ "				background-color: #5cdb95;\r\n"
+						+ "			}\r\n"
+						+ "			.header {\r\n"
+						+ "				display: flex;\r\n"
+						+ "				justify-content: space-between;\r\n"
+						+ "				margin-bottom: 50px;\r\n"
+						+ "				background-color: #379683;\r\n"
+						+ "				padding-top: 25px;\r\n"
+						+ "				padding-bottom: 25px;\r\n"
+						+ "			}\r\n"
+						+ "			.links {\r\n"
+						+ "				display: flex;\r\n"
+						+ "				width: 300px;\r\n"
+						+ "				justify-content: space-evenly;\r\n"
+						+ "				align-items: center;\r\n"
+						+ "			}\r\n"
+						+ "\r\n"
+						+ "			.store {\r\n"
+						+ "				display: flex;\r\n"
+						+ "				justify-content: center;\r\n"
+						+ "			}\r\n"
+						+ "			.grid-container {\r\n"
+						+ "				display: inline-grid;\r\n"
+						+ "				grid-template-rows: 1fr 1fr 1fr;\r\n"
+						+ "				grid-template-columns: 1fr 1fr 1fr;\r\n"
+						+ "				grid-gap: 3px;\r\n"
+						+ "				text-align: center;\r\n"
+						+ "			}\r\n"
+						+ "			h4,\r\n"
+						+ "			p {\r\n"
+						+ "				margin: 0;\r\n"
+						+ "			}\r\n"
+						+ "			.item,\r\n"
+						+ "			img,\r\n"
+						+ "			h4,\r\n"
+						+ "			p {\r\n"
+						+ "				background-color: #edf5e1;\r\n"
+						+ "			}\r\n"
+						+ "\r\n"
+						+ "			.item {\r\n"
+						+ "				width: 200px;\r\n"
+						+ "				margin: 15px;\r\n"
+						+ "				border: 3px solid #05386b;\r\n"
+						+ "			}\r\n"
+						+ "\r\n"
+						+ "			h1 {\r\n"
+						+ "				margin-left: 15px;\r\n"
+						+ "			}\r\n"
+						+ "			button {\r\n"
+						+ "				margin-top: 5px;\r\n"
+						+ "				margin-bottom: 5px;\r\n"
+						+ "			}\r\n"
+						+ "			.label {\r\n"
+						+ "				text-align: center;\r\n"
+						+ "			}\r\n"
+						+ "		</style>\r\n"
+						+ "\r\n"
+						+ "		<div class=\"header\">\r\n"
+						+ "			<h1>The Four Irons</h1>\r\n"
+						+ "			<div class=\"links\">\r\n"
+						+ "				<h3><a href=/webproject/Index>Store</a></h3>\r\n"
+						+ "				<h3><a href=/webproject/CourseGuide>Local Course Guide</a></h3>\r\n"
+						+ "			</div>\r\n"
+						+ "		</div>\r\n"
+						+ "		<h1 class=\"label\">Store</h1>\r\n"
+						+ "		<div class=\"store\">\r\n"
+						+ "			<div class=\"grid-container\">");
+				
+				while (rs.next()) {
+		            
+		            String name = rs.getString("NAME");
+		            String price = rs.getString("PRICE");
+		            String url = rs.getString("URL");
+ 
+		            response.getWriter().append("<div class=\"grid-item\">\r\n"
+		            		+ "					<div class=\"item\">\r\n"
+		            		+ "						<img\r\n"
+		            		+ "							src=\" "+ url + "\"\r\n"
+		            		+ "							width=\"75\"\r\n"
+		            		+ "							height=\"125\"\r\n"
+		            		+ "						/>\r\n"
+		            		+ "						<h4>" + name + "</h4>\r\n"
+		            		+ "						<p> " + price + "</p>\r\n"
+		            		+ "						<button>VIEW</button>\r\n"
+		            		+ "					</div>\r\n"
+		            		+ "				</div>");
+		            
+
+		         }
+				
+				response.getWriter().append("</div>\r\n"
+						+ "		</div>\r\n"
+						+ "	</body>\r\n"
+						+ "</html>\r\n"
+						+ "");
+			 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	      
+	      
+		
 	}
 
 	/**
